@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ultrazone/menu.dart';
-// TODO: Impor halaman ProductFormPage jika sudah dibuat
+import 'package:ultrazone/productlist_form.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -52,12 +52,13 @@ class LeftDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.post_add),
             title: const Text('Tambah Produk'),
-            // Bagian redirection ke NewsFormPage
+            // Bagian redirection ke ProductFormPage
             onTap: () {
-              /*
-              TODO: Buatlah routing ke ProductFormPage di sini,
-              setelah halaman ProductFormPage sudah dibuat.
-              */
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductFormPage(),
+                  ));
             },
           ),
         ],
