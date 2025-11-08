@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ultrazone/widgets/left_drawer.dart';
+import 'package:intl/intl.dart';
 
 class ProductFormPage extends StatefulWidget {
   const ProductFormPage({super.key});
@@ -17,7 +18,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
   String _desc = "";
   String _thumbnail = "";
   String _category = "jersey"; // default
-  bool _isFeatured = false; // default
+  bool _isDiscount = false; // default
   String _brand = "";
   double _rating = 0.0;
 
@@ -38,7 +39,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
             'Add Product Form',
           ),
         ),
-        backgroundColor: Colors.indigo,
+        backgroundColor: Colors.red,
         foregroundColor: Colors.white,
       ),
       drawer: LeftDrawer(),
@@ -211,34 +212,55 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("Rating Produk", style: TextStyle(fontSize: 16)),
-                      const SizedBox(height: 8),
-                      Slider(
-                        value: _rating,
-                        min: 0.0,
-                        max: 5.0,
-                        divisions: 10,
-                        label: _rating.toStringAsFixed(1),
-                        onChanged: (double value) {
-                          setState(() {
-                            _rating = value;
-                          });
-                        },
+                      const Text(
+                        "Rating Produk",
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                       ),
-                      Text("Rating: ${_rating.toStringAsFixed(1)} / 5.0"),
+                      const SizedBox(height: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.red.shade300),
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        child: Column(
+                          children: [
+                            Slider(
+                              value: _rating,
+                              min: 0.0,
+                              max: 5.0,
+                              divisions: 10,
+                              label: _rating.toStringAsFixed(1),
+                              activeColor: Colors.red,
+                              onChanged: (double value) {
+                                setState(() {
+                                  _rating = value;
+                                });
+                              },
+                            ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                "${_rating.toStringAsFixed(1)} / 5.0",
+                                style: const TextStyle(fontSize: 14, color: Colors.red),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
 
-                // === Is Featured ===
+                // === Is Discount ===
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SwitchListTile(
-                    title: const Text("Tandai sebagai Produk Unggulan"),
-                    value: _isFeatured,
+                    title: const Text("Tandai sebagai Produk Diskon"),
+                    value: _isDiscount,
                     onChanged: (bool value) {
                       setState(() {
-                        _isFeatured = value;
+                        _isDiscount = value;
                       });
                     },
                   ),
@@ -251,8 +273,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStateProperty.all(Colors.indigo),
+                        backgroundColor: MaterialStateProperty.all(Colors.red),
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
@@ -260,13 +281,40 @@ class _ProductFormPageState extends State<ProductFormPage> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: const Text('Produk berhasil disimpan!'),
+                                title: const Text('Produk berhasil tersimpan'),
+                                content: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text('Nama: $_name'),
+                                      Text('Harga: Rp ${NumberFormat('#,##0', 'id_ID').format(_price)}'),
+                                      Text('Deskripsi: $_desc'),
+                                      Text('Kategori: $_category'),
+                                      Text('Merek: $_brand'),
+                                      Text('Rating: ${_rating.toStringAsFixed(1)} / 5.0'),
+                                      Text('Thumbnail: $_thumbnail'),
+                                      Text('Unggulan: ${_isDiscount ? "Ya" : "Tidak"}'),
+                                    ],
+                                  ),
+                                ),
                                 actions: [
                                   TextButton(
                                     child: const Text('OK'),
                                     onPressed: () {
-                                      Navigator.pop(context);
-                                      _formKey.currentState!.reset();
+                                      Navigator.pop(context); // Tutup dialog
+                                      _formKey.currentState!.reset(); // Reset form
+                                      // Reset variabel (opsional, jika ingin kosongkan setelah save)
+                                      setState(() {
+                                        _name = "";
+                                        _price = 0;
+                                        _desc = "";
+                                        _thumbnail = "";
+                                        _category = "jersey";
+                                        _brand = "";
+                                        _rating = 0.0;
+                                        _isDiscount = false;
+                                      });
                                     },
                                   ),
                                 ],

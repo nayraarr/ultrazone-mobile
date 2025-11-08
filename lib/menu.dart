@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ultrazone/widgets/left_drawer.dart';
+import 'package:ultrazone/productlist_form.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
@@ -161,6 +162,15 @@ class ItemCard extends StatelessWidget {
             ..showSnackBar(
                 SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!"))
             );
+
+          // Navigate ke route yang sesuai (tergantung jenis tombol)
+          if (item.name == "Create Product") {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProductFormPage(),
+                ));
+          }
         },
         // Container untuk menyimpan Icon dan Text
         child: Container(
