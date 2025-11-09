@@ -52,3 +52,38 @@ kode ke Dart VM lalu me-restart ulang flutter app nya sekaligus membangun ulang 
 data atau navigasi proses yang sebelumnya sudah berlangsung. Prosesnya berlangsung lebih lambat dibanding hot reload, tetapi lebih cepat dari full app restart.
 
 </details>
+
+<details>
+<summary>Tugas Individu 8</summary>
+
+### Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement() pada Flutter. Dalam kasus apa sebaiknya masing-masing digunakan pada aplikasi Football Shop kamu?
+>Kedua hal ini terletak pada penyusunan stack navigasi oleh flutter. Dengan Navigator.push(), flutter menambahkan layar baru ke atas navigasi sehingga layar sebelumnya masih ada di
+dalam stack. Hal ini memungkinkan pengguna untuk kembali ke halaman sebelumnya. Fitur seperti ini cocok dalam kasus ketika pengguna sedang melihat detail sebuah produk. Ketika 
+pengguna kembali ke halaman sebelumnya, pengguna akan melihat daftar produk yang dijual. Sedangkan, Navigator.pushReplacement() berarti mengganti halaman yang aktif saat ini dengan 
+halaman baru sehingga halaman sebelumnya tidak akan ada lagi di stack. Hal ini mebuat pengguna tidak dapat kembali ke halaman sebelumnya. Fitur ini cocok untuk kasus ketika pengguna 
+selesai login. Setelah pengguna masuk, pengguna tidak perlu kembali lagi ke halaman form login.
+
+### Bagaimana kamu memanfaatkan hierarchy widget seperti Scaffold, AppBar, dan Drawer untuk membangun struktur halaman yang konsisten di seluruh aplikasi?
+>Saya memanfaatkan hierarcy widget sebagai struktur utama setiap halaman aplikasi. Scaffold digunakan dalam kedua screen/halaman saya, yaitu di MyHomePage dan ProductFormPage. Setiap 
+scaffold, saya konfigurasikan appBar sebagai judul halaman yang seragam dimana warna background dan teks nya itu konsisten yaitu merah dan putih. Judulnya berada di tengah halaman dan
+tersambung dengan Drawer. Selain itum saya juga mengonfigurasikan drawernya dengan menyisipkan LeftDrawer() di setiap halaman. LeftDrawer() ini dibuat sebagai widget terpisah dan memiliki
+navigasi yang sama (Home dan Tambah Produk). Tidak lupa saya juga mengonfigurasikan body pada scaffold untuk menampung isi dari halamannya masing-masing. Dengan ini, setiap halaman memiliki
+layout yang mirip dan pengguna akan familiar.
+
+### Dalam konteks desain antarmuka, apa kelebihan menggunakan layout widget seperti Padding, SingleChildScrollView, dan ListView saat menampilkan elemen-elemen form? Berikan contoh 
+### penggunaannya dari aplikasi kamu.
+>Ketiga hal ini membuat tata letak, responsif, dan user experience pengguna menjadi lebih baik. Pada padding, flutter akan memberikan ruang dan jarak yang konsisten satu sama lain nya. Kelebihannya
+membuat tampilan lebih rapih, konsistensi designnya baik antar elemen, mencegah elemen menempel pada tepi layar. Contoh penerapannya ada pada 'ProductFormPage', dimana setiap form field nya akan 
+dibungkus oleh padding di semua sisinya sehingga form terlihat rapih dan seragam. Pada SingleChildScrollView, flutter akan mengatasi overflow pada layar yang kecil. Kelebihannya cocok untuk form 
+yang panjang dengan banyak field, mencegah error Bottom overflowed, serta memungkinkan user menggulir halaman secara vertikal ketika isi nya melebihi tinggi layar. Contoh penerapannya ada pada
+'ProductFormPage' dimana ketika form memiliki banyak elemen input nantinya seluruh field tetap bisa diakses walaupun layar kecil (dengan scrolling). Adapun, ListView berupa widget untuk menampilkan
+daftar elemen baik secara vertikal maupun horizontal. Kelebihannya adalah cocok daftar yang panjang, lazy loading, dan otomatis menggulir. Contohnya adalah LeftDrawer yang menggunakan Listview untuk 
+navigasi.
+
+### Bagaimana kamu menyesuaikan warna tema agar aplikasi Football Shop memiliki identitas visual yang konsisten dengan brand toko?
+>Saya menyesuaikan dengan menerapkan warna utama/primary nya adalah 'Colors.red'. Hal ini diterapkan pada setiap tombol, ikon aktif, dan header dari halaman. Selain itu, teks nya juga juga diseragamakan
+berwarna putih pada setiap appBar, card menym dan drawer headernya juga. Selain itu, 'Theme.of(context).colorScheme.primary' juga digunakan pada halaman utama untuk memastikan gaya nya mengikuti tema 
+utama aplikasi walaupun 'Colors.red' dibuat lebih dominan. Lalu, card menu nya juga menggunakan warna berbeda per item nya. Tetapi, style nya masih konsisten dengan background putih dan text berwarna putih
+juga. Setiap halaman dan elemen dibuat dengan tema warna merah yang menggambarkan brand 'Ultrazone' itu sendiri yang membuat pengguna merasakan pengalaman visual energik dan mudah dikenali.
+
+</details>

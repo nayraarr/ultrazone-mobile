@@ -231,7 +231,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                               max: 5.0,
                               divisions: 10,
                               label: _rating.toStringAsFixed(1),
-                              activeColor: Colors.red,
+                              activeColor: Theme.of(context).colorScheme.primary,
                               onChanged: (double value) {
                                 setState(() {
                                   _rating = value;
@@ -273,7 +273,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.red),
+                        backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
