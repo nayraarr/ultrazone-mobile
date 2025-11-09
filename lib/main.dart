@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ultrazone/menu.dart';
+import 'package:ultrazone/screens/menu.dart';
 
 void main() {
   runApp(const MyApp());
