@@ -87,3 +87,34 @@ utama aplikasi walaupun 'Colors.red' dibuat lebih dominan. Lalu, card menu nya j
 juga. Setiap halaman dan elemen dibuat dengan tema warna merah yang menggambarkan brand 'Ultrazone' itu sendiri yang membuat pengguna merasakan pengalaman visual energik dan mudah dikenali.
 
 </details>
+
+<details>
+<summary>Tugas Individu 9</summary>
+
+### Jelaskan mengapa kita perlu membuat model Dart saat mengambil/mengirim data JSON? Apa konsekuensinya jika langsung memetakan Map<String, dynamic> tanpa model (terkait validasi tipe, null-safety, maintainability)?
+### Apa fungsi package http dan CookieRequest dalam tugas ini? Jelaskan perbedaan peran http vs CookieRequest.
+### Jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+### Jelaskan konfigurasi konektivitas yang diperlukan agar Flutter dapat berkomunikasi dengan Django. Mengapa kita perlu menambahkan 10.0.2.2 pada ALLOWED_HOSTS, mengaktifkan CORS dan pengaturan SameSite/cookie, dan menambahkan izin akses internet di Android? Apa yang akan terjadi jika konfigurasi tersebut tidak dilakukan dengan benar?
+### Jelaskan mekanisme pengiriman data mulai dari input hingga dapat ditampilkan pada Flutter.
+### Jelaskan mekanisme autentikasi dari login, register, hingga logout. Mulai dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+
+### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).
+>1. Memastikan deployment proyek tugas Django kamu telah berjalan dengan baik.
+>   Dilakukan dengan menjalankan menjalankan command `python manage.py runserver` pada root project django. Setelah itu, pada website bisa diakses pada halaman http://127.0.0.1:8000/login/ yang mana langsung 
+>   ke-redirect ke halaman login.
+>   DOKUMENTASI : https://drive.google.com/file/d/1dvIZ2KNswuv63MlskPNmR5ugLEe4HHOd/view?usp=sharing
+>
+>2. Mengimplementasikan fitur registrasi akun pada proyek tugas Flutter.
+>   
+>2. Membuat halaman login pada proyek tugas Flutter.
+>2. Mengintegrasikan sistem autentikasi Django dengan proyek tugas Flutter.
+>2. Membuat model kustom sesuai dengan proyek aplikasi Django.
+>2. Membuat halaman yang berisi daftar semua item yang terdapat pada endpoint JSON di Django yang telah kamu deploy.
+>2. Tampilkan name, price, description, thumbnail, category, dan is_featured dari masing-masing item pada halaman ini (Dapat disesuaikan dengan field yang kalian buat sebelumnya).
+>2. Membuat halaman detail untuk setiap item yang terdapat pada halaman daftar Item.
+>2. Halaman ini dapat diakses dengan menekan salah satu card item pada halaman daftar Item.
+>2. Tampilkan seluruh atribut pada model item kamu pada halaman ini.
+>2. Tambahkan tombol untuk kembali ke halaman daftar item.
+>2. Melakukan filter pada halaman daftar item dengan hanya menampilkan item yang terasosiasi dengan pengguna yang login.
+
+</details>
