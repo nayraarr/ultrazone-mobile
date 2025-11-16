@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ultrazone/widgets/left_drawer.dart';
 import 'package:intl/intl.dart';
+import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:ultrazone/screens/menu.dart';
 
 class ProductFormPage extends StatefulWidget {
   const ProductFormPage({super.key});
@@ -32,6 +36,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
         title: const Center(
@@ -275,52 +280,66 @@ class _ProductFormPageState extends State<ProductFormPage> {
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
+                        // Bagian 1: Validasi form sebelum submit
+                        // Mengecek apakah semua field yang required sudah terisi dengan benar
                         if (_formKey.currentState!.validate()) {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text('Produk berhasil tersimpan'),
-                                content: SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text('Nama: $_name'),
-                                      Text('Harga: Rp ${NumberFormat('#,##0', 'id_ID').format(_price)}'),
-                                      Text('Deskripsi: $_desc'),
-                                      Text('Kategori: $_category'),
-                                      Text('Merek: $_brand'),
-                                      Text('Rating: ${_rating.toStringAsFixed(1)} / 5.0'),
-                                      Text('Thumbnail: $_thumbnail'),
-                                      Text('Unggulan: ${_isDiscount ? "Ya" : "Tidak"}'),
-                                    ],
-                                  ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    child: const Text('OK'),
-                                    onPressed: () {
-                                      Navigator.pop(context); // Tutup dialog
-                                      _formKey.currentState!.reset(); // Reset form
-                                      // Reset variabel (opsional, jika ingin kosongkan setelah save)
-                                      setState(() {
-                                        _name = "";
-                                        _price = 0;
-                                        _desc = "";
-                                        _thumbnail = "";
-                                        _category = "jersey";
-                                        _brand = "";
-                                        _rating = 0.0;
-                                        _isDiscount = false;
-                                      });
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
+
+                          // Bagian 2: Kirim HTTP POST request ke Django backend
+                          // menggunakan postJson dari pbp_django_auth
+                          // request adalah instance dari CookieRequest yang sudah di-provide
+                          final response = await request.postJson(
+                            // URL endpoint Django untuk create product
+                            // Ganti [YOUR_APP_URL] dengan URL backend Anda
+                            // Contoh: "http://localhost:8000/create-product-flutter/"
+                            "http://localhost:8000/create-product-flutter/",
+
+                            // Line 6-14: Convert data form ke JSON format
+                            // jsonEncode() mengubah Map menjadi string JSON
+                            jsonEncode({
+                              "name": _name,                    // Nama produk dari TextField
+                              "price": _price,       // Harga dikonversi dari String ke int
+                              "description": _desc,       // Deskripsi produk
+                              "thumbnail": _thumbnail,           // URL gambar produk
+                              "rating": _rating,   // Rating dikonversi dari String ke double
+                              "category": _category,             // Kategori produk
+                              "is_discount": _isDiscount,        // Boolean untuk status diskon
+                              "brand": _brand,                   // Brand/merk produk
+                            }),
                           );
+
+                          // Bagian 3: Check apakah widget masih mounted (masih dalam widget tree)
+                          // Penting untuk menghindari error "setState on disposed widget"
+                          if (context.mounted) {
+
+                            // Bagian 4: Handle response sukses dari server
+                            if (response['status'] == 'success') {
+                              // Tampilkan snackbar sukses di bagian bawah layar
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text("Product successfully saved!"),
+                                backgroundColor: Colors.green,  // Tambahkan warna hijau untuk sukses
+                              ));
+
+                              // Navigate kembali ke halaman home setelah berhasil save
+                              // pushReplacement mengganti halaman saat ini, bukan push biasa
+                              // sehingga user tidak bisa back ke form lagi
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MyHomePage()),
+                              );
+                            }
+                            // Handle response error dari server
+                            else {
+                              // Tampilkan snackbar error jika ada masalah
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text("Something went wrong, please try again."),
+                                backgroundColor: Colors.red,  // Tambahkan warna merah untuk error
+                              ));
+                            }
+                          }
                         }
                       },
                       child: const Text(
