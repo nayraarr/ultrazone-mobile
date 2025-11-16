@@ -1,6 +1,7 @@
 import 'package:ultrazone/screens/productlist_form.dart';
 import 'package:flutter/material.dart';
 import 'package:ultrazone/screens/menu.dart';
+import 'package:ultrazone/screens/products_entry_list.dart';
 
 class ItemCard extends StatelessWidget {
   // Menampilkan kartu dengan ikon dan nama.
@@ -34,6 +35,13 @@ class ItemCard extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => ProductFormPage(),
                 ));
+          } else if (item.name == "See Football Products") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const ProductsEntryListPage()
+              ),
+            );
           }
         },
         // Container untuk menyimpan Icon dan Text
