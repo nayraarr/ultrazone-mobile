@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:ultrazone/screens/menu.dart';
 import 'package:ultrazone/screens/productlist_form.dart';
 import 'package:ultrazone/screens/products_entry_list.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:ultrazone/screens/login.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -71,6 +74,36 @@ class LeftDrawer extends StatelessWidget {
                 context,
                 MaterialPageRoute(builder: (context) => const ProductsEntryListPage()),
               );
+            },
+          ),
+
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('Logout'),
+            onTap: () async {
+              final request = context.read<CookieRequest>();
+              final response = await request.logout(
+                  "http://localhost:8000/auth/logout/");
+
+                  String message = response["message"];
+              if (context.mounted) {
+              if (response['status']) {
+              String uname = response["username"];
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text("$message See you again, $uname."),
+              ));
+              Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginPage()),
+              );
+              } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+              content: Text(message),
+              ),
+              );
+              }
+              }
             },
           ),
         ],

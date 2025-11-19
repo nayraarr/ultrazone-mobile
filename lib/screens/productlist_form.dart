@@ -292,7 +292,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                             // URL endpoint Django untuk create product
                             // Ganti [YOUR_APP_URL] dengan URL backend Anda
                             // Contoh: "http://localhost:8000/create-product-flutter/"
-                            "http://localhost:8000/create-product-flutter/",
+                            "http://localhost:8000/create-flutter/",
 
                             // Line 6-14: Convert data form ke JSON format
                             // jsonEncode() mengubah Map menjadi string JSON

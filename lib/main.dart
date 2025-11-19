@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         return request;
       },
       child: MaterialApp(
-        title: 'Football News',
+        title: 'Ultrazone Football Shop',
         theme: ThemeData(
           // This is the theme of your application.
           //

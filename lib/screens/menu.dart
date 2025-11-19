@@ -9,7 +9,7 @@ class MyHomePage extends StatelessWidget {
   final String nama = "Zita Nayra Ardini"; //nama
   final String npm = "2406404913"; //npm
   final String kelas = "F"; //kelas
-  
+
   final List<ItemHomepage> items = [
     ItemHomepage("All Product", Icons.store, Colors.blueAccent),
     ItemHomepage("My Product", Icons.inventory, Colors.green),
@@ -35,63 +35,70 @@ class MyHomePage extends StatelessWidget {
       ),
       // Menambahkan drawer
       drawer: LeftDrawer(),
-      // Body halaman dengan padding di sekelilingnya.
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        // Menyusun widget secara vertikal dalam sebuah kolom.
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Row untuk menampilkan 3 InfoCard secara horizontal.
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InfoCard(title: 'NPM', content: npm),
-                InfoCard(title: 'Name', content: nama),
-                InfoCard(title: 'Class', content: kelas),
-              ],
-            ),
-
-            // Memberikan jarak vertikal 16 unit.
-            const SizedBox(height: 16.0),
-
-            // Menempatkan widget berikutnya di tengah halaman.
-            Center(
-              child: Column(
-                // Menyusun teks dan grid item secara vertikal.
-
+      // Body halaman dengan SingleChildScrollView agar bisa scroll
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          // Menyusun widget secara vertikal dalam sebuah kolom.
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Row untuk menampilkan 3 InfoCard secara horizontal.
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // Menampilkan teks sambutan dengan gaya tebal dan ukuran 18.
-                  const Padding(
-                    padding: EdgeInsets.only(top: 16.0),
-                    child: Text(
-                      'Selamat datang di Ultrazone',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
-                      ),
-                    ),
-                  ),
-
-                  // Grid untuk menampilkan ItemCard dalam bentuk grid 3 kolom.
-                  GridView.count(
-                    primary: true,
-                    padding: const EdgeInsets.all(20),
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    crossAxisCount: 3,
-                    // Agar grid menyesuaikan tinggi kontennya.
-                    shrinkWrap: true,
-
-                    // Menampilkan ItemCard untuk setiap item dalam list items.
-                    children: items.map((ItemHomepage item) {
-                      return ItemCard(item);
-                    }).toList(),
-                  ),
+                  InfoCard(title: 'NPM', content: npm),
+                  InfoCard(title: 'Name', content: nama),
+                  InfoCard(title: 'Class', content: kelas),
                 ],
               ),
-            ),
-          ],
+
+              // Memberikan jarak vertikal 16 unit.
+              const SizedBox(height: 16.0),
+
+              // Menampilkan teks sambutan dengan gaya tebal dan ukuran 18.
+              const Padding(
+                padding: EdgeInsets.only(top: 16.0),
+                child: Text(
+                  'Selamat datang di Ultrazone',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
+                  ),
+                ),
+              ),
+
+              // Grid untuk menampilkan ItemCard dalam bentuk grid 3 kolom.
+              GridView.count(
+                primary: false, // Ubah menjadi false karena sudah di dalam ScrollView
+                padding: const EdgeInsets.all(20),
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                crossAxisCount: 3,
+                // Agar grid menyesuaikan tinggi kontennya.
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(), // Disable scroll di grid
+
+                // Menampilkan ItemCard untuk setiap item dalam list items.
+                children: items.map((ItemHomepage item) {
+                  return ItemCard(item);
+                }).toList(),
+              ),
+
+              // Tombol Logout terpisah di bawah
+              const SizedBox(height: 20),
+              SizedBox(
+                width: 200,
+                height: 77,
+                child: ItemCard(
+                    ItemHomepage("Logout", Icons.logout, Colors.orange)
+                ),
+              ),
+
+              // Tambahkan spacing di bawah agar tidak terlalu mepet
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
@@ -138,5 +145,3 @@ class ItemHomepage {
 
   ItemHomepage(this.name, this.icon, this.color);
 }
-
-
