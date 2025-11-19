@@ -5,6 +5,7 @@ import 'package:ultrazone/screens/products_detail.dart';
 import 'package:ultrazone/widgets/products_entry_card.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductsListWithFilterPage extends StatefulWidget {
   final String? initialFilter; // Parameter opsional untuk filter awal
@@ -23,6 +24,7 @@ class _ProductsListWithFilterPageState extends State<ProductsListWithFilterPage>
   String _activeFilter = 'all'; // 'all' atau 'my'
   bool _isLoading = true;
   String? _error;
+  int? _currentUserId;
 
   @override
   void initState() {
@@ -32,6 +34,13 @@ class _ProductsListWithFilterPageState extends State<ProductsListWithFilterPage>
     if (widget.initialFilter != null) {
       _activeFilter = widget.initialFilter!;
     }
+
+    _loadUserIdAndFetchProducts();
+  }
+
+  Future<void> _loadUserIdAndFetchProducts() async {
+    final prefs = await SharedPreferences.getInstance();
+    _currentUserId = prefs.getInt('user_id');  // Ambil user_id yang disimpan saat login
 
     _fetchProducts();
   }
@@ -76,14 +85,14 @@ class _ProductsListWithFilterPageState extends State<ProductsListWithFilterPage>
     if (_activeFilter == 'all') {
       return _allProducts;
     } else {
-      // Filter hanya produk milik user yang sedang login
-      // Asumsi: ProductsEntry punya field userId
-      final request = context.read<CookieRequest>();
-      // Dapatkan user ID dari cookie/session jika ada
-      // Atau bisa pass dari login page
+      // Filter produk berdasarkan userId yang sedang login
+      if (_currentUserId == null) {
+        // Jika user ID tidak ada, return empty list
+        return [];
+      }
+
       return _allProducts.where((product) {
-        // Sesuaikan dengan cara Anda menyimpan user info
-        return product.userId != null; // Ganti dengan logic yang sesuai
+        return product.userId == _currentUserId;  // Bandingkan dengan user ID yang login
       }).toList();
     }
   }

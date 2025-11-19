@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ultrazone/screens/menu.dart';
 import 'package:ultrazone/screens/register.dart';
 import 'package:flutter/material.dart';
@@ -110,6 +111,12 @@ class _LoginPageState extends State<LoginPage> {
                       if (request.loggedIn) {
                         String message = response['message'];
                         String uname = response['username'];
+                        int userId = response['user_id'];
+
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.setInt('user_id', userId);
+                        await prefs.setString('username', uname);
+
                         if (context.mounted) {
                           Navigator.pushReplacement(
                             context,

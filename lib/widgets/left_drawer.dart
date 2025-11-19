@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ultrazone/screens/menu.dart';
 import 'package:ultrazone/screens/productlist_form.dart';
 import 'package:ultrazone/screens/products_entry_list.dart';
@@ -85,7 +86,12 @@ class LeftDrawer extends StatelessWidget {
               final response = await request.logout(
                   "http://localhost:8000/auth/logout/");
 
-                  String message = response["message"];
+              String message = response["message"];
+
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.remove('user_id');
+              await prefs.remove('username');
+
               if (context.mounted) {
               if (response['status']) {
               String uname = response["username"];
